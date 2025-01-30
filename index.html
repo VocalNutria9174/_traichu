@@ -14,7 +14,7 @@ based off of:
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="icon" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAMAAABEpIrGAAAABGdBTUEAALGPC/xhBQAAACBjSFJNAAB6JgAAgIQAAPoAAACA6AAAdTAAAOpgAAA6mAAAF3CculE8AAAAOVBMVEUEBARVVVUEBATMzMxNTU0AM2bAwMCGhob///93d3eWlpZmZmZfX1+ZmZkA//9mzP8A/wAAzDMAmTMBRThoAAAAAXRSTlMAQObYZgAAAAFiS0dECIbelXoAAAAHdElNRQfiBhoAMxtZsv6uAAAAt0lEQVQ4y6WT2xKDIAxEFW1ZqgH1/z+2waTexsBMPRHy4BI2zKRpHtOWcU3bleiz4FWgNQTvt5Ov/1fgfvRnk/7eZOfhZePkTqgAHrJlAY5cKwRDUPHwGcbMMO55CxHAZhUQEDNI8V7AFSJLkJMlYFJC4hQCEXTR4QouH1OMpoekAHo2A9qvmGYJ04P+n8SDnA9HD8ssYXpYlLXC1gSd2iy8JAsCbd1rE5d3qFSozUVtslyF58P9BSj9FmCaFR0tAAAAJXRFWHRkYXRlOmNyZWF0ZQAyMDE4LTA2LTI2VDAwOjUxOjI3LTA0OjAwmWcBOgAAACV0RVh0ZGF0ZTptb2RpZnkAMjAxOC0wNi0yNlQwMDo1MToyNy0wNDowMOg6uYYAAAAASUVORK5CYII=" />
-    <script src="js/main.js"></script>
+    <!--<script src="js/main.js"></script>-->
     <link rel="stylesheet" href="css/main.css">
     <title>web start | homepage</title>
 </head>
@@ -112,4 +112,36 @@ based off of:
         </section>
     </main>
 </body>
+         
+<!-- js/main.js -->
+<script>
+         function dateTime() {
+	const date = new Date();
+	let today = date.toDateString();
+	let time = date.toLocaleTimeString();
+	document.getElementById('date-time').innerHTML = '<p id="date">' + today + '</p><p id="time">' + time + '</p>';
+	setTimeout(dateTime, 1000);
+}
+
+function weatherBalloon(cityID) {
+	var apiKey = 'cc08ac30e0be01235c715e865eaf0c13'; //OpenWeather API key
+	fetch('https://api.openweathermap.org/data/2.5/weather?id=' + cityID + '&appid=' + apiKey)
+		.then(function(resp) {
+			return resp.json()
+		})
+		.then(function(data) {
+			let weatherIcon = data.weather[0].icon;
+			let tempK = parseFloat(data.main.temp);
+			let tempC = Math.round(tempK - 273.15);
+			let tempF = Math.round((tempK - 273.15) * 1.8) + 32;
+			document.getElementById('weather').innerHTML = '<p id="location">' + data.name + '</p><p id="details" ' + 'title="' + tempF + '&deg;F">' + '<img src="https://openweathermap.org/img/wn/' + weatherIcon + '.png">' + data.weather[0].description + '<span class="separator">|</span>' + tempC + '&deg;C</p>';
+		});
+}
+
+function traichu() {
+	dateTime();
+	weatherBalloon(4347778); //OpenWeather city ID
+}
+</script>
+         
 </html>
